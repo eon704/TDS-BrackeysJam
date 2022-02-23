@@ -42,10 +42,10 @@ public class Enemy : MonoBehaviour, IDamageable {
     Vector3 directionTowardsPlayer = this.player.transform.position - position;
 
     if (directionTowardsPlayer.magnitude <= this.attackDistance) {
-// Attack
+      // Attack
       this.meleeController.Attack(this.player);
     } else {
-// Move towards Player
+      // Move towards Player
       directionTowardsPlayer = directionTowardsPlayer.normalized;
       directionTowardsPlayer *= this.speed * Time.deltaTime;
       this.rigidbody.MovePosition(position + directionTowardsPlayer);

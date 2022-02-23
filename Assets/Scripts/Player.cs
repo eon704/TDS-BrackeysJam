@@ -10,7 +10,6 @@ public class Player : MonoBehaviour, IDamageable {
   [SerializeField] private float attackDistance;
 
   private int health;
-  // private MeleeController meleeController;
   private ShootingController shootingController;
   private Camera mainCamera;
 
@@ -20,7 +19,6 @@ public class Player : MonoBehaviour, IDamageable {
 
   void Awake() {
     this.rigidbody = this.GetComponent<Rigidbody>();
-    // this.meleeController = this.GetComponent<MeleeController>();
     this.shootingController = this.GetComponent<ShootingController>();
     this.mainCamera = Camera.main;
   }
@@ -32,11 +30,13 @@ public class Player : MonoBehaviour, IDamageable {
   void Update() {
     Vector3 position = this.transform.position;
     Vector3 mouseWorldPosition = Input.mousePosition.ScreenPointToWorldPoint(this.mainCamera.transform.position.y - position.y);
-    if (Input.GetButton("Fire1")) {
-      this.shootingController.Attack(position, mouseWorldPosition - position);
+    this.transform.LookAt(mouseWorldPosition);
+
+    if (Input.GetMouseButtonDown(0)) {
+      this.shootingController.Attack();
     }
 
-    Debug.DrawRay(position, mouseWorldPosition - position, Color.red);
+    Debug.DrawRay(position, transform.forward, Color.red);
   }
 
   void FixedUpdate() {

@@ -1,32 +1,42 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using Interfaces;
-using UnityEditor;
 using UnityEngine;
 
 public class ShootingController : MonoBehaviour {
   [SerializeField] private int damage;
+  [SerializeField] private float projectileSpeed;
   [SerializeField] private int attackCooldown;
   [SerializeField] private LayerMask mask;
+  [SerializeField] private GameObject projectilePrefab;
+  [SerializeField] private Transform projectileSource;
+  [SerializeField] private AudioSource audioSource;
 
   private Coroutine attackingRoutine;
+
+  private static int _counter;
   // Connect to animator
 
-  public void Attack(Vector3 origin, Vector3 direction) {
+  public void Attack() {
+    _counter = 0;
     bool onCooldown = this.attackingRoutine != null;
 
+    Debug.Log($"Attacking, onCooldown: {onCooldown}");
     if (!onCooldown) {
-      this.attackingRoutine = this.StartCoroutine(this.StartAttack(origin, direction));
+      this.attackingRoutine = this.StartCoroutine(this.StartAttack());
     }
   }
 
-  private IEnumerator StartAttack(Vector3 origin, Vector3 direction) {
-    bool hit = Physics.Raycast(origin, direction, out RaycastHit hitInfo, 500f, this.mask);
-    if (hit) {
-      IDamageable target = hitInfo.collider.GetComponent<IDamageable>();
-      target?.TakeDamage(this.damage);
-    }
+  private IEnumerator StartAttack() {
+    this.audioSource.Play();
+    GameObject projectileObj = Instantiate(this.projectilePrefab,
+                                           this.projectileSource.position,
+                                           this.projectileSource.rotation);
+
+    projectileObj.name = $"Projectile {_counter}";
+    Projectile projectile = projectileObj.GetComponent<Projectile>();
+    projectile.SetLayerMask(this.mask);
+    projectile.SetDamage(this.damage);
+    Rigidbody rigidbody = projectileObj.GetComponent<Rigidbody>();
+    rigidbody.AddForce(this.projectileSource.forward * this.projectileSpeed, ForceMode.Impulse);
 
     yield return new WaitForSeconds(this.attackCooldown);
     this.attackingRoutine = null;
