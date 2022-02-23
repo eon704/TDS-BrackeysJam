@@ -2,17 +2,18 @@ using System.Collections;
 using Interfaces;
 using UnityEngine;
 
-public class MeleeCombatController : MonoBehaviour {
+public class MeleeController : MonoBehaviour {
   [SerializeField] private int damage;
   [SerializeField] private int attackCooldown;
 
   private Coroutine attackingRoutine;
+  // Connect to animator
 
   public void Attack(IDamageable target) {
     bool onCooldown = this.attackingRoutine != null;
 
-    if (onCooldown) {
-      this.StartCoroutine(this.StartAttack(target));
+    if (!onCooldown) {
+      this.attackingRoutine = this.StartCoroutine(this.StartAttack(target));
     }
   }
 

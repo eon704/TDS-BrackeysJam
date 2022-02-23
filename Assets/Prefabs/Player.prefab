@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 6033101992305895354}
   - component: {fileID: 6033101992305895329}
   - component: {fileID: 6033101992305895334}
-  - component: {fileID: 5967711674224612943}
-  m_Layer: 0
+  - component: {fileID: 8842422028842089537}
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,7 +132,7 @@ MonoBehaviour:
   speed: 5
   maxHealth: 10
   attackDistance: 2
---- !u!114 &5967711674224612943
+--- !u!114 &8842422028842089537
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -141,8 +141,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6033101992305895355}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9a2c01e804a4bf087b63428bda9caff, type: 3}
+  m_Script: {fileID: 11500000, guid: fcfcf004a885e4df181bc702d78ac48f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 3
-  attackCooldown: 2
+  attackCooldown: 1
+  mask:
+    serializedVersion: 2
+    m_Bits: 320
