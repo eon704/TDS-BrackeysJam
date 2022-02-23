@@ -1,6 +1,7 @@
 using Interfaces;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour, IDamageable {
   public enum Type {
@@ -10,12 +11,12 @@ public class Enemy : MonoBehaviour, IDamageable {
 
   [SerializeField] private Type type;
   [SerializeField] private int maxHealth;
-  [SerializeField] private float speed;
   [SerializeField] private float attackDistance;
 
   private int health;
   private Player player;
   private MeleeController meleeController;
+  private NavMeshAgent navMeshAgent;
 
 #pragma warning disable CS0108, CS0114
   private Rigidbody rigidbody;
@@ -25,6 +26,7 @@ public class Enemy : MonoBehaviour, IDamageable {
     this.player = FindObjectOfType<Player>();
     this.rigidbody = this.GetComponent<Rigidbody>();
     this.meleeController = this.GetComponent<MeleeController>();
+    this.navMeshAgent = this.GetComponent<NavMeshAgent>();
   }
 
   void Start() {
@@ -46,15 +48,11 @@ public class Enemy : MonoBehaviour, IDamageable {
       this.meleeController.Attack(this.player);
     } else {
       // Move towards Player
-      directionTowardsPlayer = directionTowardsPlayer.normalized;
-      directionTowardsPlayer *= this.speed * Time.deltaTime;
-      this.rigidbody.MovePosition(position + directionTowardsPlayer);
+      this.navMeshAgent.SetDestination(this.player.transform.position);
     }
   }
 
   private void UpdateGhost() { }
-
-
 
   void OnDrawGizmos() {
     Handles.DrawWireDisc(this.transform.position, Vector3.up, this.attackDistance);
