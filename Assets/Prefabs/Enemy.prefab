@@ -154,8 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   maxHealth: 5
-  speed: 2
-  attackDistance: 1.5
+  attackDistance: 2.5
 --- !u!114 &2456188475546355671
 MonoBehaviour:
   m_ObjectHideFlags: 0

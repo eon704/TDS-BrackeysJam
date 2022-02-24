@@ -19,7 +19,6 @@ public class ShootingController : MonoBehaviour {
     _counter = 0;
     bool onCooldown = this.attackingRoutine != null;
 
-    Debug.Log($"Attacking, onCooldown: {onCooldown}");
     if (!onCooldown) {
       this.attackingRoutine = this.StartCoroutine(this.StartAttack());
     }
@@ -31,7 +30,7 @@ public class ShootingController : MonoBehaviour {
                                            this.projectileSource.position,
                                            this.projectileSource.rotation);
 
-    projectileObj.name = $"Projectile {_counter}";
+    projectileObj.name = $"Projectile {_counter++}";
     Projectile projectile = projectileObj.GetComponent<Projectile>();
     projectile.SetLayerMask(this.mask);
     projectile.SetDamage(this.damage);

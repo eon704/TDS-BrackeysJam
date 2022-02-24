@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Interfaces;
 using UnityEditor;
 using UnityEngine;
@@ -28,15 +26,20 @@ public class Player : MonoBehaviour, IDamageable {
   }
 
   void Update() {
-    Vector3 position = this.transform.position;
-    Vector3 mouseWorldPosition = Input.mousePosition.ScreenPointToWorldPoint(this.mainCamera.transform.position.y - position.y);
-    this.transform.LookAt(mouseWorldPosition);
+    Ray ray = this.mainCamera.ScreenPointToRay(Input.mousePosition);
+    bool hit = Physics.Raycast(ray, out RaycastHit hitInfo,
+                               100f, LayerMask.GetMask("Floor"));
+
+    if (hit) {
+      Vector3 lookTarget = new Vector3(hitInfo.point.x, this.transform.position.y, hitInfo.point.z);
+      this.transform.LookAt(lookTarget);
+    }
 
     if (Input.GetMouseButtonDown(0)) {
       this.shootingController.Attack();
     }
 
-    Debug.DrawRay(position, transform.forward, Color.red);
+    Debug.DrawRay(transform.position, transform.forward * 2, Color.red);
   }
 
   void FixedUpdate() {
