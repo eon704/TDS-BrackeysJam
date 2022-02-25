@@ -1,8 +1,15 @@
 using Interfaces;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
+using View;
 
 public class Player : MonoBehaviour, IDamageable {
+  public UnityAction<int> OnHealthChanged { get; set; }
+  public UnityAction OnDeath { get; set; }
+
+  public int MaxHealth => this.maxHealth;
+
   [SerializeField] private float speed;
   [SerializeField] private int maxHealth;
   [SerializeField] private float attackDistance;
@@ -23,6 +30,7 @@ public class Player : MonoBehaviour, IDamageable {
 
   void Start() {
     this.health = this.maxHealth;
+    GameUI.Instance.InstantiateNewHealthBar(this, this.transform);
   }
 
   void Update() {
@@ -46,7 +54,11 @@ public class Player : MonoBehaviour, IDamageable {
     float xMovement = Input.GetAxis("Horizontal");
     float yMovement = Input.GetAxis("Vertical");
 
-    Vector3 movement = new Vector3(xMovement, 0f, yMovement).normalized;
+    Vector3 movement = new Vector3(xMovement, 0f, yMovement);
+    if (movement.magnitude > 1f) {
+      movement = movement.normalized;
+    }
+
     movement *= this.speed * Time.deltaTime;
     this.rigidbody.MovePosition(this.transform.position + movement);
   }
@@ -55,14 +67,13 @@ public class Player : MonoBehaviour, IDamageable {
     Handles.DrawWireDisc(this.transform.position, Vector3.up, this.attackDistance);
   }
 
-  public int GetHealth() {
-    return this.health;
-  }
-
   public void TakeDamage(int damage) {
     this.health -= damage;
     if (this.health <= 0) {
       Debug.Log("Player Died");
+      this.OnDeath?.Invoke();
     }
+
+    this.OnHealthChanged?.Invoke(this.health);
   }
 }

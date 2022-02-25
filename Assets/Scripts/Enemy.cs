@@ -2,12 +2,19 @@ using Interfaces;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
+using View;
 
 public class Enemy : MonoBehaviour, IDamageable {
-  public enum Type {
+  private enum Type {
     Zombie,
     Ghost
   }
+
+  public UnityAction<int> OnHealthChanged { get; set; }
+  public UnityAction OnDeath { get; set; }
+
+  public int MaxHealth => this.maxHealth;
 
   [SerializeField] private Type type;
   [SerializeField] private int maxHealth;
@@ -18,19 +25,15 @@ public class Enemy : MonoBehaviour, IDamageable {
   private MeleeController meleeController;
   private NavMeshAgent navMeshAgent;
 
-#pragma warning disable CS0108, CS0114
-  private Rigidbody rigidbody;
-#pragma warning restore CS0108, CS0114
-
   void Awake() {
     this.player = FindObjectOfType<Player>();
-    this.rigidbody = this.GetComponent<Rigidbody>();
     this.meleeController = this.GetComponent<MeleeController>();
     this.navMeshAgent = this.GetComponent<NavMeshAgent>();
   }
 
   void Start() {
     this.health = this.maxHealth;
+    GameUI.Instance.InstantiateNewHealthBar(this, this.transform);
   }
 
   void FixedUpdate() {
@@ -58,14 +61,13 @@ public class Enemy : MonoBehaviour, IDamageable {
     Handles.DrawWireDisc(this.transform.position, Vector3.up, this.attackDistance);
   }
 
-  public int GetHealth() {
-    return this.health;
-  }
-
   public void TakeDamage(int damage) {
     this.health -= damage;
     if (this.health <= 0) {
-      Destroy(gameObject);
+      this.OnDeath?.Invoke();
+      Destroy(this.gameObject);
     }
+
+    this.OnHealthChanged?.Invoke(this.health);
   }
 }
