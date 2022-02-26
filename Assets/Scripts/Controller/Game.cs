@@ -20,20 +20,18 @@ namespace Controller {
 
     [Header("Enemy Spawn Settings")]
     [SerializeField] private float spawnDelay;
-    [SerializeField] private int enemiesPerWave;
+    [SerializeField] private int startEnemiesPerWaveCount;
     [SerializeField] private int numberOfWaves;
 
     private Player player;
     private List<Enemy> enemies;
     private int currentWaveNumber;
+    private int currentEnemiesPerWave;
 
     void Start() {
-      if (this.enemiesPerWave > this.enemySpawnPositions.Count) {
-        Debug.LogWarning("More enemies will be spawned than there are the spawn points");
-      }
-
       this.enemies = new List<Enemy>();
       this.currentWaveNumber = 0;
+      this.currentEnemiesPerWave = this.startEnemiesPerWaveCount;
       this.InitializeGame();
     }
 
@@ -53,10 +51,8 @@ namespace Controller {
     }
 
     private void SpawnEnemiesWave() {
-      if (this.currentWaveNumber >= this.numberOfWaves) {
-        Debug.Log("All waves completed");
-        // TODO: Probably will be moved to the Win Condition checker
-        return;
+      if (this.currentEnemiesPerWave > this.enemySpawnPositions.Count) {
+        Debug.LogWarning("More enemies will be spawned than there are the spawn points");
       }
 
       List<int> availableSpawnIndexes = new List<int>();
@@ -64,7 +60,7 @@ namespace Controller {
         availableSpawnIndexes.Add(i);
       }
 
-      for (int i = 0; i < this.enemiesPerWave; i++) {
+      for (int i = 0; i < this.currentEnemiesPerWave; i++) {
         int randomIndex = Random.Range(0, availableSpawnIndexes.Count);
         int spawnPointIndex = availableSpawnIndexes[randomIndex];
         Transform spawnTransform = this.enemySpawnPositions[spawnPointIndex];
@@ -79,6 +75,7 @@ namespace Controller {
       }
 
       this.currentWaveNumber++;
+      this.currentEnemiesPerWave++;
     }
 
     private void OnEnemyDeath(IDamageable dyingEnemy) {
