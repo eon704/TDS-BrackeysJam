@@ -47,7 +47,7 @@ namespace View {
       this.UpdateActiveState();
     }
 
-    private void OnDeath() {
+    private void OnDeath(IDamageable source) {
       this.target.OnHealthChanged -= this.OnHealthChanged;
       this.target.OnDeath -= this.OnDeath;
       Destroy(this.gameObject);

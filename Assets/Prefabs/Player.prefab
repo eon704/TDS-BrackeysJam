@@ -274,7 +274,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 3
-  projectileSpeed: 5
+  projectileSpeed: 10
   attackCooldown: 1
   mask:
     serializedVersion: 2
