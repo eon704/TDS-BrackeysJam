@@ -78,6 +78,10 @@ namespace Controller {
       this.OnHealthChanged?.Invoke(this.health);
     }
 
+    public void GameWon() {
+      this.Death();
+    }
+
     private void Death() {
       this.OnDeath?.Invoke(this);
       Destroy(this.gameObject);

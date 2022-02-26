@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Interfaces;
 using UnityEngine;
+using UnityEngine.Events;
 using View;
 
 namespace Controller {
@@ -23,6 +24,8 @@ namespace Controller {
     [SerializeField] private int startEnemiesPerWaveCount;
     [SerializeField] private int numberOfWaves;
 
+    public UnityAction OnPlayerVictory;
+
     private Player player;
     private List<Enemy> enemies;
     private int currentWaveNumber;
@@ -41,7 +44,7 @@ namespace Controller {
                                      this.playerSpawnPosition.rotation);
 
       this.player = playerObject.GetComponent<Player>();
-      this.gameUI.SetPlayer(this.player);
+      this.gameUI.Initialize(this, this.player);
       this.StartCoroutine(this.StartEnemySpawning());
     }
 
@@ -83,7 +86,7 @@ namespace Controller {
 
       if (this.enemies.Count <= 0) {
         if (this.CheckWinCondition()) {
-          Debug.Log("Player Won!");
+          this.OnPlayerVictory?.Invoke();
         } else {
           this.StartCoroutine(this.StartEnemySpawning());
         }
