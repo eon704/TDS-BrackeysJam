@@ -1,4 +1,4 @@
-using System.Security.Cryptography;
+using System.Collections;
 using Interfaces;
 using UnityEditor;
 using UnityEngine;
@@ -10,18 +10,24 @@ namespace Controller {
     public UnityAction<int> OnHealthChanged { get; set; }
     public UnityAction<IDamageable> OnDeath { get; set; }
 
+    public UnityAction<float> OnSpellCasted;
+
     public int MaxHealth => this.maxHealth;
 
     [SerializeField] private float speed;
     [SerializeField] private int maxHealth;
     [SerializeField] private float attackDistance;
     [SerializeField] private float spellDistance;
+    [SerializeField] private float spellCooldown;
 
     private int health;
     private ShootingController shootingController;
     private Camera mainCamera;
     private bool lockInput;
     private new Rigidbody rigidbody;
+
+    private Coroutine fireballRoutine;
+    private Coroutine spellRoutine;
 
     void Awake() {
       this.rigidbody = this.GetComponent<Rigidbody>();
@@ -55,8 +61,8 @@ namespace Controller {
         this.shootingController.Attack();
       }
 
-      if (Input.GetMouseButtonDown(1)) {
-        this.CastMaterializationSpell();
+      if (Input.GetMouseButtonDown(1) && this.spellRoutine == null) {
+        this.spellRoutine = this.StartCoroutine(this.CastMaterializationSpell());
       }
     }
 
@@ -93,22 +99,30 @@ namespace Controller {
       this.lockInput = true;
     }
 
+    public void ListenToShots(UnityAction<float> action) {
+      this.shootingController.OnShot += action;
+    }
+
     private void Death() {
       this.OnDeath?.Invoke(this);
       Destroy(this.gameObject);
     }
 
-    private void CastMaterializationSpell() {
+    private IEnumerator CastMaterializationSpell() {
       Collider[] hits = Physics.OverlapSphere(this.transform.position, this.spellDistance,
                                               LayerMask.GetMask("Ghost", "Zombie"));
 
-      // Debug.Log("Hits count: {}");
       foreach (var hit in hits) {
         Enemy enemy = hit.GetComponent<Enemy>();
         if (enemy != null) {
           enemy.SetState(Enemy.State.Zombie);
         }
       }
+
+      this.OnSpellCasted?.Invoke(this.spellCooldown);
+      
+      yield return new WaitForSeconds(this.spellCooldown);
+      this.spellRoutine = null;
     }
   }
 }

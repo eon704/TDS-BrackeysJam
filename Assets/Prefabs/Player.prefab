@@ -134,6 +134,7 @@ MonoBehaviour:
   maxHealth: 10
   attackDistance: 2
   spellDistance: 7
+  spellCooldown: 10
 --- !u!114 &8842422028842089537
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,7 +1,10 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ShootingController : MonoBehaviour {
+  public UnityAction<float> OnShot;
+
   [SerializeField] private int damage;
   [SerializeField] private float projectileSpeed;
   [SerializeField] private int attackCooldown;
@@ -36,6 +39,8 @@ public class ShootingController : MonoBehaviour {
     projectile.SetDamage(this.damage);
     Rigidbody rigidbody = projectileObj.GetComponent<Rigidbody>();
     rigidbody.AddForce(this.projectileSource.forward * this.projectileSpeed, ForceMode.Impulse);
+
+    this.OnShot?.Invoke(this.attackCooldown);
 
     yield return new WaitForSeconds(this.attackCooldown);
     this.attackingRoutine = null;

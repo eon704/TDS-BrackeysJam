@@ -12,6 +12,10 @@ namespace View {
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject deathPanel;
 
+    [Header("Abilities")]
+    [SerializeField] private AbilityCooldownUI fireballCooldownUI;
+    [SerializeField] private AbilityCooldownUI spellCooldownUI;
+
     private Player player;
     private RectTransform rectTransform;
 
@@ -30,6 +34,9 @@ namespace View {
       this.player = newPlayer;
       this.player.OnDeath += this.OnPlayerDeath;
       game.OnPlayerVictory += this.OnPlayerVictory;
+
+      this.fireballCooldownUI.Initialize(this.player);
+      this.spellCooldownUI.Initialize(this.player);
     }
 
     public void InstantiateNewHealthBar(IDamageable target, Transform targetTransform) {
