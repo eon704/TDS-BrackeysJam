@@ -1641,7 +1641,6 @@ MonoBehaviour:
   playerPrefab: {fileID: 6033101992305895355, guid: aa3415c551f6048439c4a179a0038fec, type: 3}
   playerSpawnPosition: {fileID: 1326606777}
   zombiePrefab: {fileID: 4905791189195139018, guid: b94aafe75a1ec486299f4a5d6cfaca61, type: 3}
-  ghostPrefab: {fileID: 0}
   enemySpawnPositions:
   - {fileID: 143946611}
   - {fileID: 910655664}

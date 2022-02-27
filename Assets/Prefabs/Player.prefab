@@ -135,6 +135,7 @@ MonoBehaviour:
   attackDistance: 2
   spellDistance: 7
   spellCooldown: 10
+  blastPrefab: {fileID: 8396961956260433146, guid: 7a89ac295f9c148318dd0abf2a58c8ed, type: 3}
 --- !u!114 &8842422028842089537
 MonoBehaviour:
   m_ObjectHideFlags: 0

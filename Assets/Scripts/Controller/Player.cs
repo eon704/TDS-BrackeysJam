@@ -22,6 +22,7 @@ namespace Controller {
     [SerializeField] private float attackDistance;
     [SerializeField] private float spellDistance;
     [SerializeField] private float spellCooldown;
+    [SerializeField] private GameObject blastPrefab;
 
     private int health;
     private ShootingController shootingController;
@@ -126,6 +127,11 @@ namespace Controller {
           enemy.SetState(Enemy.State.Zombie);
         }
       }
+
+      Quaternion rotation = this.transform.rotation * Quaternion.AngleAxis(90, Vector3.right);
+      GameObject blastObject = Instantiate(this.blastPrefab, this.transform.position, rotation, this.transform);
+      Blast blast = blastObject.GetComponent<Blast>();
+      blast.AnimateBlast(this.spellDistance);
 
       this.OnSpellCasted?.Invoke(this.spellCooldown);
 
