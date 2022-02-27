@@ -13,7 +13,6 @@ namespace Controller {
 
     [Header("Enemies")]
     [SerializeField] private GameObject zombiePrefab;
-    [SerializeField] private GameObject ghostPrefab;
     [SerializeField] private List<Transform> enemySpawnPositions;
 
     [Header("UI")]

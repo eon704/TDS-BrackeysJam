@@ -1,3 +1,4 @@
+using Combat;
 using Interfaces;
 using UnityEditor;
 using UnityEngine;
@@ -31,14 +32,12 @@ namespace Controller {
     private NavMeshAgent navMeshAgent;
     private State state;
     private float attackDistance;
-    private new Collider collider;
     private MeshRenderer meshRenderer;
 
     void Awake() {
       this.meleeController = this.GetComponent<MeleeController>();
       this.shootingController = this.GetComponent<ShootingController>();
       this.navMeshAgent = this.GetComponent<NavMeshAgent>();
-      this.collider = this.GetComponent<Collider>();
       this.meshRenderer = this.GetComponent<MeshRenderer>();
     }
 
