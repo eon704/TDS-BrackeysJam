@@ -74,10 +74,12 @@ namespace Controller {
       }
     }
 
+#if UNITY_EDITOR
     void OnDrawGizmos() {
       Handles.color = Color.red;
       Handles.DrawWireDisc(this.transform.position, Vector3.up, this.attackDistance);
     }
+    #endif
 
     public void AssignPlayer(Player newPlayer) {
       this.player = newPlayer;

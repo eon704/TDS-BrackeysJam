@@ -83,12 +83,14 @@ namespace Controller {
       this.rigidbody.MovePosition(this.transform.position + movement);
     }
 
+    #if UNITY_EDITOR
     void OnDrawGizmos() {
       Handles.color = Color.blue;
       Handles.DrawWireDisc(this.transform.position, Vector3.up, this.attackDistance);
       Handles.color = Color.red;
       Handles.DrawWireDisc(this.transform.position, Vector3.up, this.spellDistance);
     }
+    #endif
 
     public void TakeDamage(int damage) {
       this.health -= damage;
