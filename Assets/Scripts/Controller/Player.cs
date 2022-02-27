@@ -15,14 +15,13 @@ namespace Controller {
     [SerializeField] private float speed;
     [SerializeField] private int maxHealth;
     [SerializeField] private float attackDistance;
+    [SerializeField] private float spellDistance;
 
     private int health;
     private ShootingController shootingController;
     private Camera mainCamera;
-
-#pragma warning disable CS0108, CS0114
-    private Rigidbody rigidbody;
-#pragma warning restore CS0108, CS0114
+    private bool lockInput;
+    private new Rigidbody rigidbody;
 
     void Awake() {
       this.rigidbody = this.GetComponent<Rigidbody>();
@@ -32,6 +31,7 @@ namespace Controller {
 
     void Start() {
       this.health = this.maxHealth;
+      this.lockInput = false;
       GameUI.Instance.InstantiateNewHealthBar(this, this.transform);
     }
 
@@ -45,11 +45,19 @@ namespace Controller {
         this.transform.LookAt(lookTarget);
       }
 
+      Debug.DrawRay(this.transform.position, this.transform.forward * 2, Color.red);
+
+      if (this.lockInput) {
+        return;
+      }
+
       if (Input.GetMouseButtonDown(0)) {
         this.shootingController.Attack();
       }
 
-      Debug.DrawRay(this.transform.position, this.transform.forward * 2, Color.red);
+      if (Input.GetMouseButtonDown(1)) {
+        this.CastMaterializationSpell();
+      }
     }
 
     void FixedUpdate() {
@@ -66,7 +74,10 @@ namespace Controller {
     }
 
     void OnDrawGizmos() {
+      Handles.color = Color.blue;
       Handles.DrawWireDisc(this.transform.position, Vector3.up, this.attackDistance);
+      Handles.color = Color.red;
+      Handles.DrawWireDisc(this.transform.position, Vector3.up, this.spellDistance);
     }
 
     public void TakeDamage(int damage) {
@@ -79,12 +90,24 @@ namespace Controller {
     }
 
     public void GameWon() {
-      this.Death();
+      this.lockInput = true;
     }
 
     private void Death() {
       this.OnDeath?.Invoke(this);
       Destroy(this.gameObject);
+    }
+
+    private void CastMaterializationSpell() {
+      Collider[] hits = Physics.OverlapSphere(this.transform.position, this.spellDistance,
+                                              LayerMask.GetMask("Enemy"));
+
+      foreach (var hit in hits) {
+        Enemy enemy = hit.GetComponent<Enemy>();
+        if (enemy != null) {
+          enemy.SetState(Enemy.State.Zombie);
+        }
+      }
     }
   }
 }

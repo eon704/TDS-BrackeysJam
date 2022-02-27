@@ -1497,7 +1497,7 @@ MonoBehaviour:
   gameUI: {fileID: 1893545028}
   spawnDelay: 2
   startEnemiesPerWaveCount: 2
-  numberOfWaves: 1
+  numberOfWaves: 3
 --- !u!1 &1355928992
 GameObject:
   m_ObjectHideFlags: 0

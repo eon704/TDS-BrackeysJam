@@ -69,6 +69,7 @@ namespace Controller {
         Transform spawnTransform = this.enemySpawnPositions[spawnPointIndex];
 
         var enemyObject = Instantiate(this.zombiePrefab, spawnTransform.position, spawnTransform.rotation);
+        enemyObject.name = $"Enemy {i}";
         var enemy = enemyObject.GetComponent<Enemy>();
         this.enemies.Add(enemy);
         enemy.AssignPlayer(this.player);
