@@ -35,7 +35,8 @@ namespace View {
       this.objectToFollow = targetTransform;
 
       newTarget.OnHealthChanged += this.OnHealthChanged;
-      newTarget.OnDeath += this.OnDeath;
+      newTarget.OnDeath += _ => this.OnDeath();
+      newTarget.OnReset += this.OnDeath;
       this.target = newTarget;
 
       this.RepositionHealthBar();
@@ -47,9 +48,9 @@ namespace View {
       this.UpdateActiveState();
     }
 
-    private void OnDeath(IDamageable source) {
+    private void OnDeath() {
       this.target.OnHealthChanged -= this.OnHealthChanged;
-      this.target.OnDeath -= this.OnDeath;
+      this.target.OnDeath -= _ => this.OnDeath();
       Destroy(this.gameObject);
     }
 

@@ -33,12 +33,25 @@ namespace Controller {
 
     void Start() {
       this.enemies = new List<Enemy>();
-      this.currentWaveNumber = 0;
-      this.currentEnemiesPerWave = this.startEnemiesPerWaveCount;
       this.InitializeGame();
     }
 
     public void InitializeGame() {
+      this.currentWaveNumber = 0;
+      this.currentEnemiesPerWave = this.startEnemiesPerWaveCount;
+
+      if (this.player != null) {
+        this.player.Reset();
+      }
+
+      if (this.enemies.Count > 0) {
+        foreach (var enemy in this.enemies) {
+          enemy.Reset();
+        }
+
+        this.enemies.Clear();
+      }
+
       var playerObject = Instantiate(this.playerPrefab,
                                      this.playerSpawnPosition.position,
                                      this.playerSpawnPosition.rotation);

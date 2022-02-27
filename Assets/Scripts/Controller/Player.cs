@@ -10,6 +10,8 @@ namespace Controller {
     public UnityAction<int> OnHealthChanged { get; set; }
     public UnityAction<IDamageable> OnDeath { get; set; }
 
+    public UnityAction OnReset { get; set; }
+
     public UnityAction<float> OnSpellCasted;
 
     public int MaxHealth => this.maxHealth;
@@ -103,6 +105,11 @@ namespace Controller {
       this.shootingController.OnShot += action;
     }
 
+    public void Reset() {
+      this.OnReset?.Invoke();
+      Destroy(this.gameObject);
+    }
+
     private void Death() {
       this.OnDeath?.Invoke(this);
       Destroy(this.gameObject);
@@ -120,7 +127,7 @@ namespace Controller {
       }
 
       this.OnSpellCasted?.Invoke(this.spellCooldown);
-      
+
       yield return new WaitForSeconds(this.spellCooldown);
       this.spellRoutine = null;
     }

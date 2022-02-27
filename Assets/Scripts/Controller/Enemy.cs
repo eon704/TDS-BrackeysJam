@@ -14,6 +14,7 @@ namespace Controller {
 
     public UnityAction<int> OnHealthChanged { get; set; }
     public UnityAction<IDamageable> OnDeath { get; set; }
+    public UnityAction OnReset { get; set; }
 
     public int MaxHealth => this.maxHealth;
 
@@ -107,6 +108,11 @@ namespace Controller {
           this.gameObject.layer = LayerMask.NameToLayer("Ghost");
           break;
       }
+    }
+
+    public void Reset() {
+      this.OnReset?.Invoke();
+      Destroy(this.gameObject);
     }
 
     private void Attack() {
