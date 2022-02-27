@@ -20,6 +20,8 @@ namespace Controller {
     [SerializeField] private int maxHealth;
     [SerializeField] private float meleeAttackDistance;
     [SerializeField] private float rangedAttackDistance;
+    [SerializeField] private Color ghostColor;
+    [SerializeField] private Color zombieColor;
 
     private int health;
     private Player player;
@@ -93,16 +95,15 @@ namespace Controller {
 
     public void SetState(State newState) {
       this.state = newState;
-      Color color = this.meshRenderer.material.color;
       switch (newState) {
         case State.Zombie:
           this.attackDistance = this.meleeAttackDistance;
-          this.meshRenderer.material.color = new Color(color.r, color.g, color.b, 1f);
+          this.meshRenderer.material.color = this.zombieColor;
           this.gameObject.layer = LayerMask.NameToLayer("Zombie");
           break;
         case State.Ghost:
           this.attackDistance = this.rangedAttackDistance;
-          this.meshRenderer.material.color = new Color(color.r, color.g, color.b, 0.3f);
+          this.meshRenderer.material.color = this.ghostColor;
           this.gameObject.layer = LayerMask.NameToLayer("Ghost");
           break;
       }

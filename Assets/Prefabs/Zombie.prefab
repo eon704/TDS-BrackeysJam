@@ -157,6 +157,8 @@ MonoBehaviour:
   maxHealth: 5
   meleeAttackDistance: 2
   rangedAttackDistance: 5
+  ghostColor: {r: 1, g: 0.6179246, b: 0.6179246, a: 1}
+  zombieColor: {r: 0.7830189, g: 0, b: 0, a: 1}
 --- !u!114 &2456188475546355671
 MonoBehaviour:
   m_ObjectHideFlags: 0
