@@ -58,7 +58,7 @@ namespace Controller {
       if (this.player == null) {
         return;
       }
-      
+
       Vector3 position = this.transform.position;
       Vector3 directionTowardsPlayer = this.player.transform.position - position;
 
@@ -98,14 +98,14 @@ namespace Controller {
         case State.Zombie:
           this.attackDistance = this.meleeAttackDistance;
           this.meshRenderer.material.color = new Color(color.r, color.g, color.b, 1f);
+          this.gameObject.layer = LayerMask.NameToLayer("Zombie");
           break;
         case State.Ghost:
           this.attackDistance = this.rangedAttackDistance;
           this.meshRenderer.material.color = new Color(color.r, color.g, color.b, 0.3f);
+          this.gameObject.layer = LayerMask.NameToLayer("Ghost");
           break;
       }
-
-      this.collider.isTrigger = newState == State.Ghost;
     }
 
     private void Attack() {

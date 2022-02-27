@@ -151,7 +151,7 @@ MonoBehaviour:
   attackCooldown: 1
   mask:
     serializedVersion: 2
-    m_Bits: 320
+    m_Bits: 576
   projectilePrefab: {fileID: 923995687495784607, guid: 9614c3ab65c264b5bb18b750cf35410d, type: 3}
   projectileSource: {fileID: 756328455885085009}
   audioSource: {fileID: 6518733299142050335}

@@ -100,8 +100,9 @@ namespace Controller {
 
     private void CastMaterializationSpell() {
       Collider[] hits = Physics.OverlapSphere(this.transform.position, this.spellDistance,
-                                              LayerMask.GetMask("Enemy"));
+                                              LayerMask.GetMask("Ghost", "Zombie"));
 
+      // Debug.Log("Hits count: {}");
       foreach (var hit in hits) {
         Enemy enemy = hit.GetComponent<Enemy>();
         if (enemy != null) {
