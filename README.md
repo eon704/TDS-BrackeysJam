@@ -2,6 +2,8 @@
 
 Top-down shooter submission for the [Brackeys Game Jam 2022.1](https://itch.io/jam/brackeys-7).
 
+`Theme: It is not real.`
+
 Play the game at [itch.io](https://eon704.itch.io/wizards-quest).
 
 # Story
